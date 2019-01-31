@@ -1,2 +1,30 @@
 # Link ~/.ssh/config to this
 # ln -s ~/.cfg/ssh ~/.ssh/config
+
+# Defaults
+Host *
+	ForwardAgent no
+	ForwardX11 no
+	ForwardX11Trusted no
+	User matej
+	Protocol 2
+	ServerAliveInterval 0
+	TcpKeepAlive no
+
+# Workstation
+Host DeathStar deathstar ds
+	HostName deathstar.fri.uni-lj.si
+	Port 3022
+	ForwardX11 Yes
+	ForwardX11Trusted Yes
+
+# Dingo
+Host dingo
+	HostName dingo.fri.uni-lj.si
+	Port 3022
+	ForwardX11 Yes
+
+# Zvonko
+Host zvonko
+	HostName zvonko.fri.uni-lj.si
+	ForwardX11 Yes
