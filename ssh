@@ -1,0 +1,2 @@
+# Link ~/.ssh/config to this
+# ln -s ~/.cfg/ssh ~/.ssh/config

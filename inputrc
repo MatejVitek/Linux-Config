@@ -1,0 +1,14 @@
+# Link ~/.inputrc to this:
+# ln -s ~/.cfg/inputrc ~/.inputrc
+# or, if you have local config in .inputrc, include it by prepending this line:
+# $include ~/.cfg/inputrc
+
+# Include default config
+$include /etc/inputrc
+
+# Make tab-completion case-insensitive
+set completion-ignore-case On
+
+# Arrow up/down autocompletes to history, rather than scrolling through history
+"\e[A":history-search-backward
+"\e[B":history-search-forward

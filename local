@@ -1,0 +1,8 @@
+# Terminal title has to be set in ~/.bashrc because PS1 is a pile of crap
+# Other local configuration can go here
+
+# Automatically activate keras environment
+conda activate keras
+
+# Add CUDA to PATH
+export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
