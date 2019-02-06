@@ -1,6 +1,6 @@
-# Add lines to ~/.bashrc:
+# Append lines to ~/.bashrc:
 # . ~/.cfg/bashrc
-# . ~/.cfg/local (Only if local config exists)
+# . ~/.cfg/localbashrc (Only if local config exists)
 
 # Command history size
 HISTSIZE=5000
