@@ -11,3 +11,8 @@ alias ds="ssh DeathStar"
 alias dingo="ssh dingo"
 alias zvonko="ssh zvonko"
 alias python=python3
+
+bg () {
+	"$@" &
+	disown
+}
