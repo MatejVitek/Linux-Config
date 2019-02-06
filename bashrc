@@ -11,8 +11,6 @@ alias ds="ssh DeathStar"
 alias dingo="ssh dingo"
 alias zvonko="ssh zvonko"
 alias python=python3
+alias bgmatlab="bgrun matlab -desktop"
 
-bg () {
-	"$@" &
-	disown
-}
+bgrun () { nohup "$@" &>/dev/null & }
