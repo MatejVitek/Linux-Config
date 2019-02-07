@@ -1,6 +1,3 @@
-# Append line to ~/.bashrc:
-# . ~/.cfg/bashrc
-
 # Command history size
 HISTSIZE=5000
 HISTFILESIZE=10000

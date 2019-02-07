@@ -1,6 +1,3 @@
-# Link ~/.gitconfig to this:
-# ln -s ~/.cfg/git ~/.gitconfig
-
 [user]
 	email = matej.vitek.business@gmail.com
 	name = Matej Vitek
