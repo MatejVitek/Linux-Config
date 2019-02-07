@@ -1,5 +1,9 @@
 In order to not push changes to local config, run the following command:
+```bash
 git update-index --assume-unchanged local/*
+```
 
 To undo the above command, run:
+```bash
 git update-index --no-assume-unchanged local/*
+```
