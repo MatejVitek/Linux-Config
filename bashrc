@@ -1,4 +1,4 @@
-# Append lines to ~/.bashrc:
+# Append line to ~/.bashrc:
 # . ~/.cfg/bashrc
 
 # Command history size
