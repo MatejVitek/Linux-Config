@@ -7,3 +7,4 @@ set completion-ignore-case On
 # Arrow up/down autocompletes to history, rather than scrolling through history
 "\e[A":history-search-backward
 "\e[B":history-search-forward
+

@@ -1,50 +1,97 @@
 #!/bin/bash
+
+# Move directory to ~/.cfg
+cd $(dirname "${BASH_SOURCE[0]}")
+pwd=$(pwd)
+if [ ! "$pwd" -ef ~/.cfg ]; then
+	echo "Renaming directory"
+	cd ..
+	mv "$pwd" ~/.cfg
+fi
 cd ~
 
-# Rename to .cfg
-if [ -d linux-config ] then
-	mv linux-config .cfg
-fi
-
 # Copy defaults to local
-if [ ! -d .cfg/local ] then
+if [ ! -d .cfg/local ]; then
+	echo "Copying defaults to local"
 	cp -r .cfg/default .cfg/local
 fi
 
+# Set global permissions
+echo "Setting permissions"
+chmod -R 755 ~/.cfg
+
 # If sourcing bashrc doesn't happen yet in .bashrc, append line
-grep -q -F '.cfg/bashrc' .bashrc && echo bashrc already found || echo Appending bashrc && echo '. ~/.cfg/bashrc' >> .bashrc
-
-# Similar for profile (but currently doesn't exist so commented out)
-# grep -q -F '.cfg/profile' .profile && echo profile already found || echo Appending profile && echo '. $HOME/.cfg/profile' >> .profile
-
-# Link .gitconfig to git
-if [ ! -f .gitconfig ] then
-	echo Linking git
-	ln -s ~/.cfg/git .gitconfig
+if ! grep -q -F '.cfg/bashrc' .bashrc; then
+	echo "Appending bashrc"
+	echo '. "$HOME/.cfg/bashrc"' >> .bashrc
 else
-	echo Could not link .gitconfig->.cfg/git, please merge manually.
+	echo "bashrc already found"
 fi
 
-# inputrc
-if [ -f .inputrc ]
-	# If it exists, follow procedure from bashrc
-	grep -q -F '.cfg/inputrc' .inputrc && echo inputrc already found || echo Appending inputrc && echo '$include ~/.cfg/inputrc' >> .inputrc
+# Similar for profile (but currently doesn't exist so commented out)
+#if ! grep -q -F '.cfg/profile' .profile; then
+#	echo "Appending profile"
+#	echo '. "$HOME/.cfg/profile"' >> .profile
+#else
+#	echo "profile already found"
+#fi
+
+# .gitconfig
+# If it's already a link, do nothing
+if [ -L .gitconfig ]; then
+	echo ".gitconfig already linked"
+# If it's a normal file, report conflict
+elif [ -f .gitconfig ]; then
+	echo "Could not link .gitconfig->.cfg/git, because .gitconfig already exists. Please merge manually."
+# Otherwise link it to git
 else
-	# Otherwise link it to inputrc
-	echo Linking inputrc
+	echo "Linking git"
+	ln -s ~/.cfg/git .gitconfig
+fi
+
+# .inputrc
+# If it's already a link, do nothing
+if [ -L .inputrc ]; then
+	echo "inputrc already linked"
+# If it's a normal file, follow procedure from bashrc above
+elif [ -f .inputrc ]; then
+	if ! grep -q -F '.cfg/inputrc' .inputrc; then
+		echo "Appending inputrc"
+		# TODO: Prepend instead of appending
+		echo '$include "$HOME/.cfg/inputrc"' >> .inputrc
+	else
+		echo "inputrc already found"
+	fi
+# Otherwise link it to inputrc
+else
+	echo "Linking inputrc"
 	ln -s ~/.cfg/inputrc .inputrc
 fi
 
 # For ssh, same as git above
-if [ ! -f .ssh/config ] then
-	echo Linking ssh
-	ln -s ~/.cfg/ssh ~/.ssh/config
+if [ -L .ssh/config ]; then
+	echo ".ssh/config already linked"
+elif [ -f .ssh/config ]; then
+	echo "Could not link .ssh/config->.cfg/ssh, because .ssh/config already exists. Please merge manually."
 else
-	echo Could not link .ssh/config->.cfg/ssh, please merge manually.
+	echo "Linking ssh"
+	ln -s ~/.cfg/ssh .ssh/config
+fi
+# Stricter permissions
+chmod 700 ~/.cfg/ssh
+
+# localbashrc - same thing as bashrc
+if ! grep -q -F '.cfg/local/bashrc' .bashrc; then
+	echo "Appending local bashrc"
+	echo '. "$HOME/.cfg/local/bashrc"' >> .bashrc
+else
+	echo "Local bashrc already found"
 fi
 
-# localbashrc
-grep -q -F '.cfg/local/bashrc' .bashrc && echo Local bashrc already found || echo Appending local bashrc && echo '. ~/.cfg/local/bashrc' >> .bashrc
-
-#localprofile
-grep -q -F '.cfg/local/profile' .profile && echo Local profile already found || echo Appending local profile && echo '. $HOME/.cfg/local/profile' >> .profile
+# localprofile - same thing as bashrc
+if ! grep -q -F '.cfg/local/profile' .profile; then
+	echo "Appending local profile"
+	echo '. "$HOME/.cfg/local/profile"' >> .profile
+else
+	echo "Local profile already found"
+fi
