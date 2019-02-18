@@ -6,7 +6,7 @@ pwd=$(pwd)
 if [ ! "$pwd" -ef ~/.cfg ]; then
 	echo "Renaming directory"
 	cd ..
-	mv "$pwd" ~/.cfg
+	cp -r "$pwd" ~/.cfg
 fi
 cd ~
 
@@ -95,3 +95,6 @@ if ! grep -q -F '.cfg/local/profile' .profile; then
 else
 	echo "Local profile already found"
 fi
+
+# If directory was copied, remove old one
+rm -rf "$pwd"
