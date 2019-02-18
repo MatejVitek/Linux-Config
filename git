@@ -10,6 +10,7 @@
 	c = commit -m
 	cl = clone
 	d = diff
+	f = !git add -A && git commit -m "$1" && git push
 	l = ls-files
 	ls = ls-files
 	p = push
