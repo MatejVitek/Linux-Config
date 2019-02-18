@@ -97,4 +97,6 @@ else
 fi
 
 # If directory was copied, remove old one
-rm -rf "$pwd"
+if [ ! "$pwd" -ef ~/.cfg ]; then
+	rm -rf "$pwd"
+fi
