@@ -75,6 +75,9 @@ elif [ -f .ssh/config ]; then
 	echo "Could not link .ssh/config->.cfg/ssh, because .ssh/config already exists. Please merge manually."
 else
 	echo "Linking ssh"
+	if [ ! -d .ssh ]; then
+		mkdir .ssh
+	fi
 	ln -s ~/.cfg/ssh .ssh/config
 fi
 # Stricter permissions
