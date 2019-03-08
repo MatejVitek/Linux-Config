@@ -29,6 +29,8 @@ else
 fi
 
 # Similar for profile (but currently doesn't exist so commented out)
+# TODO: Create the file and add ssh-agent code to it from https://stackoverflow.com/questions/18880024/start-ssh-agent-on-login/18915067#18915067
+
 #if ! grep -q -F '.cfg/profile' .profile; then
 #	echo "Appending profile"
 #	echo '. "$HOME/.cfg/profile"' >> .profile
@@ -67,6 +69,8 @@ else
 	echo "Linking inputrc"
 	ln -s ~/.cfg/inputrc .inputrc
 fi
+
+# TODO: Create SSH keys if non-existent
 
 # For ssh, same as git above
 if [ -L .ssh/config ]; then
