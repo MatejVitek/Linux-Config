@@ -70,7 +70,20 @@ else
 	ln -s ~/.cfg/inputrc .inputrc
 fi
 
-# TODO: Create SSH keys if non-existent
+# If ~/.ssh doesn't exist yet, create it
+if [ ! -d .ssh ]; then
+	echo "Creating ~/.ssh directory"
+	mkdir .ssh
+fi
+chmod 700 .ssh
+
+# If ssh keys don't exist yet, generate them
+if [ ! -f .ssh/id_rsa ] || [ ! -f .ssh/id_rsa.pub ]; then
+	echo "Generating SSH keys"
+	ssh-keygen
+fi
+chmod 644 .ssh/id_rsa.pub
+chmod 600 .ssh/id_rsa
 
 # For ssh, same as git above
 if [ -L .ssh/config ]; then
@@ -79,13 +92,9 @@ elif [ -f .ssh/config ]; then
 	echo "Could not link .ssh/config->.cfg/ssh, because .ssh/config already exists. Please merge manually."
 else
 	echo "Linking ssh"
-	if [ ! -d .ssh ]; then
-		mkdir .ssh
-	fi
 	ln -s ~/.cfg/ssh .ssh/config
 fi
-# Stricter permissions
-chmod 700 ~/.cfg/ssh
+chmod 700 .cfg/ssh
 
 # localbashrc - same thing as bashrc
 if ! grep -q -F '.cfg/local/bashrc' .bashrc; then
