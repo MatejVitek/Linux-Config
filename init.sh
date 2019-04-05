@@ -51,6 +51,17 @@ else
 	ln -s ~/.cfg/git .gitconfig
 fi
 
+# tmux
+# Same process as .gitconfig
+if [ -L .tmux.conf ]; then
+	echo ".tmux.conf already linked"
+elif [ -f .tmux.conf ]; then
+	echo "Could not link .tmux.conf->.cfg/tmux, because .tmux.conf already exists. Please merge manually."
+else
+	echo "Linking tmux"
+	ln -s ~/.cfg/tmux .tmux.conf
+fi
+
 # .inputrc
 # If it's already a link, do nothing
 if [ -L .inputrc ]; then
