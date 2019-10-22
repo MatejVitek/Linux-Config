@@ -18,7 +18,7 @@ Host DeathStar deathstar ds
 # Dingo
 Host dingo
 	HostName dingo.fri.uni-lj.si
-	Port 666
+	Port 3022
 	ForwardX11 Yes
 
 # Zvonko
