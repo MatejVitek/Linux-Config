@@ -5,6 +5,8 @@ HISTFILESIZE=10000
 # Aliases
 alias ds="ssh DeathStar"
 alias dingo="ssh dingo"
+alias panga="ssh panga"
+alias palit="ssh palit"
 alias zvonko="ssh zvonko"
 alias python=python3
 alias bgmatlab="bgrun matlab -desktop"
