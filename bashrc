@@ -10,6 +10,9 @@ alias python=python3
 alias bgmatlab="bgrun matlab -desktop"
 alias tma="tmux attach -t"
 alias tmn="tmux new -s"
+alias pssh=parallel-ssh
+alias pscp=parallel-scp
+alias nsmi="watch -d -n 0.5 -t nvidia-smi"
 
 bgrun () {
 	nohup "$@" &>/dev/null &
