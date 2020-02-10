@@ -29,7 +29,7 @@ Host panga
 Host palit
 	HostName palit.fri.uni-lj.si
 	Port 3022
-	ForwardX11
+	ForwardX11 Yes
 
 Host zvonko
 	HostName zvonko.fri.uni-lj.si
