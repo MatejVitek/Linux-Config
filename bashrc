@@ -1,5 +1,5 @@
 # Command history size
-HISTSIZE=5000
+HISTSIZE=5001
 HISTFILESIZE=10000
 
 # Aliases
