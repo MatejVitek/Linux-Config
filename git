@@ -13,6 +13,7 @@
 	ch = checkout
 	cl = clone
 	d = diff
+	discard = checkout --
 	# This is a trick to allow passing arguments to git aliases
 	f = "!git add -A && git commit -m \"$1\" && git push #"
 	l = ls-files
