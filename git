@@ -1,7 +1,8 @@
+# This file is for shared git configuration. Local configuration should go into ~/.gitconfig
 [user]
 	email = matej.vitek.business@gmail.com
 	name = Matej Vitek
-	
+
 [alias]
 	a = add -A
 	b = branch
@@ -25,6 +26,3 @@
 	untracked = !git ls -t | grep ^S | cut -c 3-
 	aliases = !git config -l | grep alias | cut -c 7-
 
-# Include local config	
-[include]
-	path = local/git
