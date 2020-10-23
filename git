@@ -19,6 +19,7 @@
 	p = push
 	ps = push
 	pl = pull
+	r = rm --cached
 	s = status
 
 	untrack = update-index --skip-worktree
