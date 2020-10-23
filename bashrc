@@ -16,6 +16,7 @@ alias pssh=parallel-ssh
 alias pscp=parallel-scp
 # Parallel ssh with password piped in (for sudo commands, https git clone, etc.)
 alias ppssh='printf "Password: " && read -s PASS && echo "${PASS}" | pssh -I -x "-tt"'
+alias present="pdfpc -s"
 alias nsmi="watch -d -n 0.5 -t nvidia-smi"
 
 bgrun () {
