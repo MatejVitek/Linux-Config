@@ -8,6 +8,7 @@ alias dingo="ssh dingo"
 alias panga="ssh panga"
 alias palit="ssh palit"
 alias zvonko="ssh zvonko"
+alias dgx="ssh dgx"
 alias python=python3
 alias bgmatlab="bgrun matlab -desktop"
 alias tma="tmux attach -t"

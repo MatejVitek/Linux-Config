@@ -1,13 +1,3 @@
-# Defaults
-Host *
-	ForwardAgent no
-	ForwardX11 no
-	ForwardX11Trusted no
-	User matej
-	Protocol 2
-	ServerAliveInterval 0
-	TcpKeepAlive no
-
 # Workstation
 Host DeathStar deathstar ds
 	HostName deathstar.fri.uni-lj.si
@@ -34,3 +24,19 @@ Host palit
 Host zvonko
 	HostName zvonko.fri.uni-lj.si
 	ForwardX11 Yes
+
+# NVIDIA DGX A100 SLURM
+Host dgx
+	HostName login.cloud.garaza.io
+	User matej.vitek@fri.uni-lj.si
+	ForwardAgent yes
+
+# Defaults
+Host *
+	ForwardAgent no
+	ForwardX11 no
+	ForwardX11Trusted no
+	User matej
+	Protocol 2
+	ServerAliveInterval 0
+	TcpKeepAlive no
