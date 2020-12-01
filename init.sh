@@ -107,11 +107,24 @@ chmod 700 .ssh
 
 # If ssh keys don't exist yet, generate them
 if ! ls .ssh/id_* >/dev/null 2>&1; then
-	echo "Generating SSH keys"
-	ssh-keygen -o -a 100 -t ed25519
+	while true; do
+		read -p "SSH keys not found. Should I generate them? (Y/N)" yn
+		case $yn in
+		[Yy]*)
+			ssh-keygen -o -a 100 -t ed25519
+			chmod 644 .ssh/id_ed25519.pub
+			chmod 600 .ssh/id_ed25519
+			break
+			;;
+		[Nn]*)
+			break
+			;;
+		*)
+			echo "Please answer yes or no."
+			;;
+		esac
+	done
 fi
-chmod 644 .ssh/id_ed25519.pub
-chmod 600 .ssh/id_ed25519
 
 # For ssh, same as tmux above
 if [ -L .ssh/config ]; then
