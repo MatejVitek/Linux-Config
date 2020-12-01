@@ -106,12 +106,12 @@ fi
 chmod 700 .ssh
 
 # If ssh keys don't exist yet, generate them
-if [ ! -f .ssh/id_ecdsa ] || [ ! -f .ssh/id_ecdsa.pub ]; then
+if ! ls .ssh/id_* > /dev/null; then
 	echo "Generating SSH keys"
-	ssh-keygen -t ecdsa -b 521
+	ssh-keygen -o -a 100 -t ed25519
 fi
-chmod 644 .ssh/id_ecdsa.pub
-chmod 600 .ssh/id_ecdsa
+chmod 644 .ssh/id_ed25519.pub
+chmod 600 .ssh/id_ed25519
 
 # For ssh, same as tmux above
 if [ -L .ssh/config ]; then
