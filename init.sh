@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-# Move directory to ~/.cfg
+# Move directory to ~/.cfg (if you started inside the directory, the terminal will still say you're in the old directory name after the script finishes but actually it will be renamed)
 cd $(dirname "${BASH_SOURCE[0]}")
 pwd=$(pwd)
 if [ ! "$pwd" -ef ~/.cfg ]; then
 	echo "Renaming directory"
 	cd ..
-	cp -r "$pwd" ~/.cfg
+	mv "$pwd" ~/.cfg
 fi
 cd ~
 
@@ -138,9 +138,4 @@ if ! grep -q -F '.cfg/local/profile' .profile; then
 	echo '. "$HOME/.cfg/local/profile"' >> .profile
 else
 	echo "Local profile already found"
-fi
-
-# If directory was copied, remove old one
-if [ ! "$pwd" -ef ~/.cfg ]; then
-	rm -rf "$pwd"
 fi
