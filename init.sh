@@ -106,7 +106,7 @@ fi
 chmod 700 .ssh
 
 # If ssh keys don't exist yet, generate them
-if ! ls .ssh/id_* > /dev/null; then
+if ! ls .ssh/id_* >/dev/null 2>&1; then
 	echo "Generating SSH keys"
 	ssh-keygen -o -a 100 -t ed25519
 fi
