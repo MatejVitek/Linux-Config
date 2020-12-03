@@ -72,7 +72,7 @@ elif [ -f .tmux.conf ]; then
 	echo "Could not link .tmux.conf->.cfg/tmux, because .tmux.conf already exists. Please merge manually."
 else
 	echo "Linking tmux"
-	ln -s ~/.cfg/tmux .tmux.conf
+	ln -s .cfg/tmux .tmux.conf
 fi
 
 # .inputrc
@@ -95,7 +95,7 @@ elif [ -f .inputrc ]; then
 # Otherwise link it to inputrc
 else
 	echo "Linking inputrc"
-	ln -s ~/.cfg/inputrc .inputrc
+	ln -s .cfg/inputrc .inputrc
 fi
 
 # If ~/.ssh doesn't exist yet, create it
@@ -133,7 +133,7 @@ elif [ -f .ssh/config ]; then
 	echo "Could not link .ssh/config->.cfg/ssh, because .ssh/config already exists. Please merge manually."
 else
 	echo "Linking ssh"
-	ln -s ~/.cfg/ssh .ssh/config
+	ln -s .cfg/ssh .ssh/config
 fi
 chmod 700 .cfg/ssh
 
