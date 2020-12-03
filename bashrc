@@ -10,6 +10,7 @@ alias palit="ssh palit"
 alias zvonko="ssh zvonko"
 alias slurm="ssh slurm"
 alias python=python3
+alias pip=pip3
 alias bgmatlab="bgrun matlab -desktop"
 alias tma="tmux attach -t"
 alias tmn="tmux new -s"

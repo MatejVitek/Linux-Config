@@ -133,7 +133,7 @@ elif [ -f .ssh/config ]; then
 	echo "Could not link .ssh/config->.cfg/ssh, because .ssh/config already exists. Please merge manually."
 else
 	echo "Linking ssh"
-	ln -s .cfg/ssh .ssh/config
+	ln -s ../.cfg/ssh .ssh/config
 fi
 chmod 700 .cfg/ssh
 
