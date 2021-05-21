@@ -25,6 +25,11 @@ Host zvonko
 	HostName zvonko.fri.uni-lj.si
 	ForwardX11 Yes
 
+# LRV server
+Host lrv
+	HostName lrv.fri.uni-lj.si
+	User matejv
+
 # NVIDIA DGX A100 SLURM
 Host slurm dgx nvidia-dgx-a100
 	HostName login.cloud.garaza.io
