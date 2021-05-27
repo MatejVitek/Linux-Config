@@ -30,6 +30,10 @@ Host lrv
 	HostName lrv.fri.uni-lj.si
 	User matejv
 
+# Sclera VM on LRV server
+Host sclera
+	HostName sclera.fri.uni-lj.si
+
 # NVIDIA DGX A100 SLURM
 Host slurm dgx nvidia-dgx-a100
 	HostName login.cloud.garaza.io
