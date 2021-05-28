@@ -31,8 +31,9 @@ Host lrv
 	User matejv
 
 # Sclera VM on LRV server
-Host sclera
+Host sclera endor
 	HostName sclera.fri.uni-lj.si
+	Port 3022
 
 # NVIDIA DGX A100 SLURM
 Host slurm dgx nvidia-dgx-a100
