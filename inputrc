@@ -4,6 +4,10 @@ $include /etc/inputrc
 # Make tab-completion case-insensitive
 set completion-ignore-case On
 
+# Make TAB cycle through entries instead of listing them when multiple matches are found
+TAB: menu-complete
+"\e[Z": menu-complete-backward
+
 # Arrow up/down autocompletes to history, rather than scrolling through history
 "\e[A":history-search-backward
 "\e[B":history-search-forward

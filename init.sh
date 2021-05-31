@@ -1,12 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Move directory to ~/.cfg
+# Move directory to ~/.cfg (if you started inside the directory, the terminal will still say you're in the old directory name after the script finishes but actually it will be renamed)
 cd $(dirname "${BASH_SOURCE[0]}")
 pwd=$(pwd)
 if [ ! "$pwd" -ef ~/.cfg ]; then
 	echo "Renaming directory"
 	cd ..
-	cp -r "$pwd" ~/.cfg
+	mv "$pwd" ~/.cfg
 fi
 cd ~
 
@@ -20,6 +20,7 @@ fi
 echo "Setting permissions"
 chmod -R 755 ~/.cfg
 
+# bashrc
 # If sourcing bashrc doesn't happen yet in .bashrc, append line
 if ! grep -q -F '.cfg/bashrc' .bashrc; then
 	echo "Appending bashrc"
@@ -29,6 +30,8 @@ else
 fi
 
 # Similar for profile (but currently doesn't exist so commented out)
+#TODO: Create the file and add ssh-agent code to it from https://stackoverflow.com/questions/18880024/start-ssh-agent-on-login/18915067#18915067
+
 #if ! grep -q -F '.cfg/profile' .profile; then
 #	echo "Appending profile"
 #	echo '. "$HOME/.cfg/profile"' >> .profile
@@ -36,52 +39,103 @@ fi
 #	echo "profile already found"
 #fi
 
-# .gitconfig
-# If it's already a link, do nothing
-if [ -L .gitconfig ]; then
-	echo ".gitconfig already linked"
-# If it's a normal file, report conflict
-elif [ -f .gitconfig ]; then
-	echo "Could not link .gitconfig->.cfg/git, because .gitconfig already exists. Please merge manually."
-# Otherwise link it to git
+# gitconfig
+# Similar to bashrc
+# If it doesn't exist, create it
+if [ ! -f .gitconfig ]; then
+	touch .gitconfig
+fi
+# If including git doesn't happen yet in .gitconfig, add it
+if [ ! -L .gitconfig ] && ! grep -q -F '.cfg/git' .gitconfig; then
+	echo "Including shared git config"
+	# If [include] not in .gitconfig yet, add it at the start
+	newline=
+	if ! grep -q -F '[include]' .gitconfig; then
+		newline=\\\n
+		if [ -s .gitconfig ]; then
+			sed -i '1i\[include]' .gitconfig
+		else
+			echo "[include]" >> .gitconfig
+		fi
+	fi
+	# https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/
+	sed -i "/^\[include\]/a \\\\tpath = \"~\/.cfg\/git\"${newline}" .gitconfig
 else
-	echo "Linking git"
-	ln -s ~/.cfg/git .gitconfig
+	echo "git config already linked or included"
+fi
+
+# tmux
+# Link .tmux.conf to tmux if possible
+if [ -L .tmux.conf ]; then
+	echo ".tmux.conf already linked"
+elif [ -f .tmux.conf ]; then
+	echo "Could not link .tmux.conf->.cfg/tmux, because .tmux.conf already exists. Please merge manually."
+else
+	echo "Linking tmux"
+	ln -s .cfg/tmux .tmux.conf
 fi
 
 # .inputrc
-# If it's already a link, do nothing
+# If it's a link, leave it alone
 if [ -L .inputrc ]; then
 	echo "inputrc already linked"
-# If it's a normal file, follow procedure from bashrc above
+# If it's a normal file, follow procedure from gitconfig
 elif [ -f .inputrc ]; then
 	if ! grep -q -F '.cfg/inputrc' .inputrc; then
 		echo "Appending inputrc"
-		# TODO: Prepend instead of appending
-		echo '$include "$HOME/.cfg/inputrc"' >> .inputrc
+		# Prepend instead of appending so the local configuration wins out
+		if [ -s .inputrc ]; then
+			sed -i '$include "$HOME/.cfg/inputrc"' .inputrc
+		else
+			echo '$include "$HOME/.cfg/inputrc"' >> .inputrc
+		fi
 	else
 		echo "inputrc already found"
 	fi
 # Otherwise link it to inputrc
 else
 	echo "Linking inputrc"
-	ln -s ~/.cfg/inputrc .inputrc
+	ln -s .cfg/inputrc .inputrc
 fi
 
-# For ssh, same as git above
+# If ~/.ssh doesn't exist yet, create it
+if [ ! -d .ssh ]; then
+	echo "Creating ~/.ssh directory"
+	mkdir .ssh
+fi
+chmod 700 .ssh
+
+# If ssh keys don't exist yet, generate them
+if ! ls .ssh/id_* >/dev/null 2>&1; then
+	while true; do
+		read -p "SSH keys not found. Should I generate them? (Y/N)" yn
+		case $yn in
+		[Yy]*)
+			ssh-keygen -o -a 100 -t ed25519
+			chmod 644 .ssh/id_ed25519.pub
+			chmod 600 .ssh/id_ed25519
+			break
+			;;
+		[Nn]*)
+			break
+			;;
+		*)
+			echo "Please answer yes or no."
+			;;
+		esac
+	done
+fi
+
+# For ssh, same as tmux above
 if [ -L .ssh/config ]; then
 	echo ".ssh/config already linked"
 elif [ -f .ssh/config ]; then
 	echo "Could not link .ssh/config->.cfg/ssh, because .ssh/config already exists. Please merge manually."
 else
 	echo "Linking ssh"
-	if [ ! -d .ssh ]; then
-		mkdir .ssh
-	fi
-	ln -s ~/.cfg/ssh .ssh/config
+	ln -s ../.cfg/ssh .ssh/config
 fi
-# Stricter permissions
-chmod 700 ~/.cfg/ssh
+chmod 700 .cfg/ssh
 
 # localbashrc - same thing as bashrc
 if ! grep -q -F '.cfg/local/bashrc' .bashrc; then
@@ -97,9 +151,4 @@ if ! grep -q -F '.cfg/local/profile' .profile; then
 	echo '. "$HOME/.cfg/local/profile"' >> .profile
 else
 	echo "Local profile already found"
-fi
-
-# If directory was copied, remove old one
-if [ ! "$pwd" -ef ~/.cfg ]; then
-	rm -rf "$pwd"
 fi
