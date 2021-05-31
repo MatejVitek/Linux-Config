@@ -15,13 +15,22 @@ Host DeathStar deathstar ds
 	ForwardX11 Yes
 	ForwardX11Trusted Yes
 
-# Dingo
+# Lab computers
 Host dingo
 	HostName dingo.fri.uni-lj.si
 	Port 3022
 	ForwardX11 Yes
 
-# Zvonko
+Host panga
+	HostName panga.fri.uni-lj.si
+	Port 3022
+	ForwardX11 Yes
+
+Host palit
+	HostName palit.fri.uni-lj.si
+	Port 3022
+	ForwardX11 Yes
+
 Host zvonko
 	HostName zvonko.fri.uni-lj.si
 	ForwardX11 Yes
