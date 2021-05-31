@@ -36,7 +36,7 @@ Host sclera endor
 	Port 3022
 
 # NVIDIA DGX A100 SLURM
-Host slurm dgx nvidia-dgx-a100
+Host slurm a100 dgx nvidia-dgx-a100
 	HostName login.cloud.garaza.io
 	User matej.vitek@fri.uni-lj.si
 	ForwardAgent yes
