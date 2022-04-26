@@ -12,7 +12,7 @@
 	cl = clone
 	d = diff
 	# This is a trick to allow passing arguments to git aliases
-	discard = "!git checkout -- \"${1:-.}\" #"
+	discard = "![ -z \"$1\" ] && { git checkout -- .; git clean -df; } || git checkout -- \"$1\" #"
 	f = "!git add -A && git commit -m \"$1\" && git push #"
 	l = ls-files
 	ls = ls-files
