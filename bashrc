@@ -15,6 +15,7 @@ alias slurm="ssh slurm"
 alias python=python3
 alias pip=pip3
 alias bgmatlab="bgrun matlab -desktop"
+alias tm="tmux new -A -s"
 alias tma="tmux attach -t"
 alias tmn="tmux new -s"
 alias pssh=parallel-ssh
