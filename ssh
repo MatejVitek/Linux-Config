@@ -29,6 +29,12 @@ Host zvonko
 	ForwardAgent yes
 	ForwardX11 yes
 
+# FE Lab
+Host newton
+	HostName 6.tcp.eu.ngrok.io
+	User matejv
+	Port 16892
+
 # LRV server
 Host lrv
 	HostName lrv.fri.uni-lj.si
