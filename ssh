@@ -6,6 +6,12 @@ Host DeathStar deathstar ds
 	ForwardX11Trusted yes
 
 # Lab computers
+Host zverina
+	HostName zverina.fri.uni-lj.si
+	User matejv
+	Port 3022
+	ForwardX11 yes
+
 Host dingo
 	HostName dingo.fri.uni-lj.si
 	Port 3022
