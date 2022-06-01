@@ -152,3 +152,11 @@ if ! grep -q -F '.cfg/local/profile' .profile; then
 else
 	echo "Local profile already found"
 fi
+
+# Replace this repo's URL with the SSH version since we have SSH keys now
+URL="$(git remote get-url origin)"
+if [[ "$URL" == "https:"* ]]; then
+	URL="${URL/'https:\/\/github.com\/'/'git@github.com:'}"
+	echo "Replacing remote URL with ${URL}, don't forget to upload your SSH key to your GitHub profile"
+	git remote set-url origin "$URL"
+fi
