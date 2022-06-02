@@ -1,5 +1,24 @@
 #!/usr/bin/env bash
 
+# Helper function to ask for confirmation
+ask() {
+	while true; do
+		read -p "$1 (Y/N) " yn
+		case $yn in
+		[Yy]*)
+			return $(true)
+			;;
+		[Nn]*)
+			return $(false)
+			;;
+		*)
+			echo "Please answer yes or no."
+			;;
+		esac
+	done
+}
+
+
 # Move directory to ~/.cfg (if you started inside the directory, the terminal will still say you're in the old directory name after the script finishes but actually it will be renamed)
 cd $(dirname "${BASH_SOURCE[0]}")
 pwd=$(pwd)
@@ -107,23 +126,11 @@ chmod 700 .ssh
 
 # If ssh keys don't exist yet, generate them
 if ! ls .ssh/id_* &>/dev/null; then
-	while true; do
-		read -p "SSH keys not found. Should I generate them? (Y/N)" yn
-		case $yn in
-		[Yy]*)
-			ssh-keygen -o -a 100 -t ed25519
-			chmod 644 .ssh/id_ed25519.pub
-			chmod 600 .ssh/id_ed25519
-			break
-			;;
-		[Nn]*)
-			break
-			;;
-		*)
-			echo "Please answer yes or no."
-			;;
-		esac
-	done
+	if ask "SSH keys not found. Should I generate them?"; then
+		ssh-keygen -o -a 100 -t ed25519
+		chmod 644 .ssh/id_ed25519.pub
+		chmod 600 .ssh/id_ed25519
+	fi
 fi
 
 # For ssh, same as tmux above
@@ -166,7 +173,9 @@ fi
 # Replace this repo's URL with the SSH version since we have SSH keys now
 URL="$(git -C .cfg remote get-url origin)"
 if [[ "$URL" == "https:"* ]]; then
-	URL="${URL/'https:\/\/github.com\/'/'git@github.com:'}"
-	echo "Replacing remote URL with ${URL}, don't forget to upload your SSH key to your GitHub profile"
-	git -C .cfg remote set-url origin "$URL"
+	if ask "This repo currently uses HTTPS. Switch to SSH?"; then
+		URL="${URL/https:\/\/github.com\//git@github.com:}"
+		echo "Replacing remote URL with ${URL}, don't forget to upload your SSH key to your GitHub profile"
+		git -C .cfg remote set-url origin "$URL"
+	fi
 fi
