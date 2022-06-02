@@ -1,3 +1,6 @@
+# Include local config
+Include ~/.cfg/local/ssh
+
 # Workstation
 Host DeathStar deathstar ds
 	HostName deathstar.fri.uni-lj.si
