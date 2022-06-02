@@ -1,0 +1,10 @@
+# Clusters defined as <cluster> <host_or_cluster1> <host_or_cluster2> ...
+
+# LRV Lab computers
+lrv dingo zvonko panga palit
+
+# LMI Lab computers
+lmi newton lecun bengio
+
+# Computers in use for IPAD project
+ipad panga lmi

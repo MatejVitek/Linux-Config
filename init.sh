@@ -61,7 +61,7 @@ if [ ! -L .gitconfig ] && ! grep -q -F '.cfg/git' .gitconfig; then
 	# https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/
 	sed -i "/^\[include\]/a \\\\tpath = \"~\/.cfg\/git\"${newline}" .gitconfig
 else
-	echo "git config already linked or included"
+	echo ".gitconfig already linked or included"
 fi
 
 # tmux
@@ -106,7 +106,7 @@ fi
 chmod 700 .ssh
 
 # If ssh keys don't exist yet, generate them
-if ! ls .ssh/id_* >/dev/null 2>&1; then
+if ! ls .ssh/id_* &>/dev/null; then
 	while true; do
 		read -p "SSH keys not found. Should I generate them? (Y/N)" yn
 		case $yn in
@@ -137,6 +137,16 @@ else
 fi
 chmod 700 .cfg/ssh
 
+# For cssh, similar to ssh above but link whole directory
+if [ -L .clusterssh ]; then
+	echo ".clusterssh already linked"
+elif [ -d .clusterssh ]; then
+	echo "Could not link .clusterssh->.cfg/cssh, because .clusterssh already exists. Please merge manually."
+else
+	echo "Linking cssh"
+	ln -s .cfg/cssh .clusterssh
+fi
+
 # localbashrc - same thing as bashrc
 if ! grep -q -F '.cfg/local/bashrc' .bashrc; then
 	echo "Appending local bashrc"
@@ -154,9 +164,9 @@ else
 fi
 
 # Replace this repo's URL with the SSH version since we have SSH keys now
-URL="$(git remote get-url origin)"
+URL="$(git -C .cfg remote get-url origin)"
 if [[ "$URL" == "https:"* ]]; then
 	URL="${URL/'https:\/\/github.com\/'/'git@github.com:'}"
 	echo "Replacing remote URL with ${URL}, don't forget to upload your SSH key to your GitHub profile"
-	git remote set-url origin "$URL"
+	git -C .cfg remote set-url origin "$URL"
 fi
