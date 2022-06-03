@@ -40,19 +40,19 @@ Host zvonko
 
 # FE Lab
 Host newton
-        HostName 7.tcp.eu.ngrok.io
-        User matejv
-        Port 11006
+	HostName 5.tcp.eu.ngrok.io
+	User matejv
+	Port 12696
 
 Host lecun
-        HostName 192.168.91.150
-        User mvitek
-        ProxyJump newton
+	HostName 192.168.91.150
+	User mvitek
+	ProxyJump newton
 
 Host bengio
-        HostName 192.168.91.151
-        User mvitek
-        ProxyJump newton
+	HostName 192.168.91.151
+	User mvitek
+	ProxyJump newton
 
 # LRV server
 Host lrv
