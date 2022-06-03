@@ -2,8 +2,22 @@
 
 # Helper function to ask for confirmation
 ask() {
+	case "$2" in
+	[Yy]*)
+		DEFAULT=$(true)
+		PROMPT="[Y]/N"
+		;;
+	[Nn]*)
+		DEFAULT=$(false)
+		PROMPT="Y/[N]"
+		;;
+	*)
+		PROMPT="Y/N"
+		;;
+	esac
+
 	while true; do
-		read -p "$1 (Y/N) " yn
+		read -p "$1 ($PROMPT) " yn
 		case $yn in
 		[Yy]*)
 			return $(true)
@@ -12,12 +26,14 @@ ask() {
 			return $(false)
 			;;
 		*)
+			if [ "$DEFAULT" ]; then
+				return $DEFAULT
+			fi
 			echo "Please answer yes or no."
 			;;
 		esac
 	done
 }
-
 
 # Move directory to ~/.cfg (if you started inside the directory, the terminal will still say you're in the old directory name after the script finishes but actually it will be renamed)
 cd $(dirname "${BASH_SOURCE[0]}")
@@ -30,10 +46,14 @@ fi
 cd ~
 
 # Copy defaults to local
-if [ ! -d .cfg/local ]; then
-	echo "Copying defaults to local"
-	cp -r .cfg/default .cfg/local
-fi
+[ -d .cfg/local ] || mkdir .cfg/local
+for FILE in .cfg/default/*; do
+	NAME=$(basename "$FILE")
+	if [ ! -e ".cfg/local/$NAME" ]; then
+		echo "Copying $NAME to local"
+		cp "$FILE" ".cfg/local/$NAME"
+	fi
+done
 
 # Set global permissions
 echo "Setting permissions"
@@ -61,9 +81,7 @@ fi
 # gitconfig
 # Similar to bashrc
 # If it doesn't exist, create it
-if [ ! -f .gitconfig ]; then
-	touch .gitconfig
-fi
+[ -e .gitconfig ] || touch .gitconfig
 # If including git doesn't happen yet in .gitconfig, add it
 if [ ! -L .gitconfig ] && ! grep -q -F '.cfg/git' .gitconfig; then
 	echo "Including shared git config"
@@ -173,7 +191,7 @@ fi
 # Replace this repo's URL with the SSH version since we have SSH keys now
 URL="$(git -C .cfg remote get-url origin)"
 if [[ "$URL" == "https:"* ]]; then
-	if ask "This repo currently uses HTTPS. Switch to SSH?"; then
+	if ask "This repo currently uses HTTPS. Switch to SSH?" Y; then
 		URL="${URL/https:\/\/github.com\//git@github.com:}"
 		echo "Replacing remote URL with ${URL}, don't forget to upload your SSH key to your GitHub profile"
 		git -C .cfg remote set-url origin "$URL"
