@@ -40,9 +40,9 @@ Host zvonko
 
 # FE Lab
 Host newton
-	HostName 5.tcp.eu.ngrok.io
+	HostName 0.tcp.eu.ngrok.io
 	User matejv
-	Port 12696
+	Port 10193
 
 Host lecun
 	HostName 192.168.91.150
