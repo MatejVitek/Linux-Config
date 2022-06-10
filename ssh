@@ -64,11 +64,19 @@ Host sclera endor
 	HostName sclera.fri.uni-lj.si
 	Port 3022
 
-# NVIDIA DGX A100 SLURM
-Host slurm a100 dgx nvidia-dgx-a100
+# SLURM
+Host a100 dgx nvidia-dgx-a100
 	HostName login.cloud.garaza.io
 	User matej.vitek@fri.uni-lj.si
 	ForwardAgent yes
+
+Host vega gvega vegagpu
+	HostName logingpu.vega.izum.si
+	User vitekm
+
+Host cvega vegacpu
+	HostName logincpu.vega.izum.si
+	User vitekm
 
 # Defaults
 Host *
