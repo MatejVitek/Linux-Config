@@ -70,12 +70,16 @@ Host a100 dgx nvidia-dgx-a100
 	User matej.vitek@fri.uni-lj.si
 	ForwardAgent yes
 
-Host vega gvega vegagpu
+Host vega
+	HostName login.vega.izum.si
+
+Host gvega vegagpu
 	HostName logingpu.vega.izum.si
-	User vitekm
 
 Host cvega vegacpu
 	HostName logincpu.vega.izum.si
+
+Host *vega*
 	User vitekm
 
 # Defaults
