@@ -60,7 +60,7 @@ echo "Setting permissions"
 chmod -R 755 ~/.cfg
 
 # bashrc
-# If sourcing bashrc doesn't happen yet in .bashrc, append line
+# If bashrc isn't sourced yet in .bashrc, append line
 if ! grep -q -F '.cfg/bashrc' .bashrc; then
 	echo "Appending bashrc"
 	echo '. "$HOME/.cfg/bashrc"' >> .bashrc
@@ -68,12 +68,17 @@ else
 	echo "bashrc already found"
 fi
 
-# Similar for profile (but currently doesn't exist so commented out)
-#TODO: Create the file and add ssh-agent code to it from https://stackoverflow.com/questions/18880024/start-ssh-agent-on-login/18915067#18915067
+# If .bash_profile doesn't exist but .profile does, rename it (since we never use sh as a login shell anyway)
+if [ ! -e .bash_profile ] && [ -e .profile ]; then
+	echo "Renaming .profile to .bash_profile"
+	mv .profile .bash_profile
+fi
 
-#if ! grep -q -F '.cfg/profile' .profile; then
+# If profile isn't sourced yet in .bash_profile, append line (but currently doesn't exist so commented out)
+#TODO: Create the file and add ssh-agent code to it from https://stackoverflow.com/questions/18880024/start-ssh-agent-on-login/18915067#18915067
+#if ! grep -q -F '.cfg/profile' .bash_profile; then
 #	echo "Appending profile"
-#	echo '. "$HOME/.cfg/profile"' >> .profile
+#	echo '. "$HOME/.cfg/profile"' >> .bash_profile
 #else
 #	echo "profile already found"
 #fi
@@ -181,9 +186,9 @@ else
 fi
 
 # localprofile - same thing as bashrc
-if ! grep -q -F '.cfg/local/profile' .profile; then
+if ! grep -q -F '.cfg/local/profile' .bash_profile; then
 	echo "Appending local profile"
-	echo '. "$HOME/.cfg/local/profile"' >> .profile
+	echo '. "$HOME/.cfg/local/profile"' >> .bash_profile
 else
 	echo "Local profile already found"
 fi
