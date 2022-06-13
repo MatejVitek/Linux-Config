@@ -41,9 +41,9 @@ Host zvonko
 
 # FE Lab
 Host newton
-	HostName 7.tcp.eu.ngrok.io
+	HostName 6.tcp.eu.ngrok.io
 	User matejv
-	Port 17185
+	Port 11393
 	ForwardAgent yes
 
 Host lecun
