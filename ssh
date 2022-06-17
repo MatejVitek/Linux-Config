@@ -40,21 +40,27 @@ Host zvonko
 	ForwardX11 yes
 
 # FE Lab
+Host lsi lmi
+	HostName 4.tcp.ngrok.io
+	User mvitek
+	Port 17306
+	ForwardAgent yes
+
 Host newton
-	HostName 7.tcp.eu.ngrok.io
+	HostName 192.168.91.110
+	ProxyJump lsi
 	User matejv
-	Port 18400
 	ForwardAgent yes
 
 Host lecun
 	HostName 192.168.91.150
-	ProxyJump newton
+	ProxyJump lsi
 	User mvitek
 	ForwardAgent yes
 
 Host bengio
 	HostName 192.168.91.151
-	ProxyJump newton
+	ProxyJump lsi
 	User mvitek
 	ForwardAgent yes
 

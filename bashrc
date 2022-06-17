@@ -3,6 +3,8 @@ HISTSIZE=5000
 HISTFILESIZE=10000
 
 # Aliases
+alias python=python3
+alias pip=pip3
 alias ds="ssh DeathStar"
 alias dingo="ssh dingo"
 alias panga="ssh panga"
@@ -12,22 +14,15 @@ alias zvonko="ssh zvonko"
 alias newton="ssh newton"
 alias lecun="ssh lecun"
 alias bengio="ssh bengio"
-alias lrv="ssh lrv"
 alias sclera="ssh sclera"
 alias dgx="ssh dgx"
 alias vega="ssh vega"
 alias cvega="ssh vegacpu"
 alias gvega="ssh vegagpu"
-alias python=python3
-alias pip=pip3
 alias bgmatlab="bgrun matlab -desktop"
 alias tm="tmux new -A -s"
 alias tma="tmux attach -t"
 alias tmn="tmux new -s"
-alias pssh=parallel-ssh
-alias pscp=parallel-scp
-# Parallel ssh with password piped in (for sudo commands, https git clone, etc.)
-alias ppssh='printf "Password: " && read -s PASS && echo "${PASS}" | pssh -I -x "-tt"'
 alias present="pdfpc -s"
 alias nsmi="watch -d -n 0.5 -t nvidia-smi"
 
