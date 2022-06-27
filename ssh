@@ -41,9 +41,9 @@ Host zvonko
 
 # FE Lab
 Host lsi lmi
-	HostName 4.tcp.ngrok.io
+	HostName 8.tcp.ngrok.io
 	User mvitek
-	Port 17306
+	Port 19634
 	ForwardAgent yes
 
 Host newton
