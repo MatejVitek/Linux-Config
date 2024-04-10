@@ -8,7 +8,7 @@ if uname -a | egrep -i "(microsoft|wsl|windows)" &>/dev/null; then
 	PS1="${PS1/"\[\e]0;"/"\[\e]0;Ubuntu - "}"
 
 	# WSL SSH Agent
-	if [ -e "~/.wsl-ssh-agent" ]; then
+	if [ -e "$HOME/.wsl-ssh-agent" ]; then
 		export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock
 		ss -a | grep -q $SSH_AUTH_SOCK
 		if [ $? -ne 0   ]; then

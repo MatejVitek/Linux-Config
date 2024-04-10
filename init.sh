@@ -38,12 +38,12 @@ ask() {
 # Move directory to ~/.cfg (if you started inside the directory, the terminal will still say you're in the old directory name after the script finishes but actually it will be renamed)
 cd $(dirname "${BASH_SOURCE[0]}")
 pwd=$(pwd)
-if [ ! "$pwd" -ef ~/.cfg ]; then
+if [ ! "$pwd" -ef "$HOME/.cfg" ]; then
 	echo "Renaming directory"
 	cd ..
-	mv "$pwd" ~/.cfg
+	mv "$pwd" "$HOME/.cfg"
 fi
-cd ~
+cd "$HOME"
 
 # Copy defaults to local
 [ -d .cfg/local ] || mkdir .cfg/local
@@ -57,7 +57,7 @@ done
 
 # Set global permissions
 echo "Setting permissions"
-chmod -R 755 ~/.cfg
+chmod -R 755 .cfg
 
 # bashrc
 # If bashrc isn't sourced yet in .bashrc, append line
@@ -101,7 +101,7 @@ if [ ! -L .gitconfig ] && ! grep -q -F '.cfg/git' .gitconfig; then
 		fi
 	fi
 	# https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/
-	sed -i "/^\[include\]/a \\\\tpath = \"~\/.cfg\/git\"${newline}" .gitconfig
+	sed -i "/^\[include\]/a \\\\tpath = ~\/.cfg\/git${newline}" .gitconfig
 else
 	echo ".gitconfig already linked or included"
 fi
@@ -109,17 +109,17 @@ fi
 # WSL Stuff
 if uname -a | egrep -i "(microsoft|wsl|windows)" &>/dev/null; then
 	# Link WSL SSH Agent to npiperelay.exe
-	if [ -L ~/.wsl-ssh-agent ]; then
+	if [ -L .wsl-ssh-agent ]; then
 		echo "WSL SSH Agent already linked"
 	else
-		[ -e ~/.wsl-ssh-agent ] && ask ".wsl-ssh-agent already exists but is not a symbolic link. Remove it?" Y && rm ~/.wsl-ssh-agent
-		if [ ! -e ~/.wsl-ssh-agent ]; then
+		[ -e .wsl-ssh-agent ] && ask ".wsl-ssh-agent already exists but is not a symbolic link. Remove it?" Y && rm .wsl-ssh-agent
+		if [ ! -e .wsl-ssh-agent ]; then
 			FILE="/mnt/c/Program Files/WSL SSH Agent/npiperelay.exe"
 			[ -e "$FILE" ] || FILE="${FILE/"Program Files"/"Program Files (x86)"}"
 			[ -e "$FILE" ] || read -p "Path to npiperelay.exe (don't use quotes; leave empty to not set up WSL SSH Agent): " FILE
 			if [ -e "$FILE" ]; then
 				echo "Linking WSL SSH Agent to $FILE"
-				ln -s "$FILE" ~/.wsl-ssh-agent
+				ln -s "$FILE" .wsl-ssh-agent
 			fi
 		fi
 	fi
