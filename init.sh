@@ -106,6 +106,25 @@ else
 	echo ".gitconfig already linked or included"
 fi
 
+# WSL Stuff
+if uname -a | egrep -i "(microsoft|wsl|windows)" &>/dev/null; then
+	# Link WSL SSH Agent to npiperelay.exe
+	if [ -L ~/.wsl-ssh-agent ]; then
+		echo "WSL SSH Agent already linked"
+	else
+		[ -e ~/.wsl-ssh-agent ] && ask ".wsl-ssh-agent already exists but is not a symbolic link. Remove it?" Y && rm ~/.wsl-ssh-agent
+		if [ ! -e ~/.wsl-ssh-agent ]; then
+			FILE="/mnt/c/Program Files/WSL SSH Agent/npiperelay.exe"
+			[ -e "$FILE" ] || FILE="${FILE/"Program Files"/"Program Files (x86)"}"
+			[ -e "$FILE" ] || read -p "Path to npiperelay.exe (don't use quotes; leave empty to not set up WSL SSH Agent): " FILE
+			if [ -e "$FILE" ]; then
+				echo "Linking WSL SSH Agent to $FILE"
+				ln -s "$FILE" ~/.wsl-ssh-agent
+			fi
+		fi
+	fi
+fi
+
 # tmux
 # Link .tmux.conf to tmux if possible
 if [ -L .tmux.conf ]; then

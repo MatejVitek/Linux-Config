@@ -2,6 +2,22 @@
 HISTSIZE=5000
 HISTFILESIZE=10000
 
+# WSL Stuff
+if uname -a | egrep -i "(microsoft|wsl|windows)" &>/dev/null; then
+	# Set terminal title (for KeePass AutoType)
+	PS1="${PS1/"\[\e]0;"/"\[\e]0;Ubuntu - "}"
+
+	# WSL SSH Agent
+	if [ -e "~/.wsl-ssh-agent" ]; then
+		export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock
+		ss -a | grep -q $SSH_AUTH_SOCK
+		if [ $? -ne 0   ]; then
+			rm -f $SSH_AUTH_SOCK
+			(setsid socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:"$HOME/.wsl-ssh-agent -ei -s //./pipe/openssh-ssh-agent",nofork &) &>/dev/null
+		fi
+	fi
+fi
+
 # Aliases
 alias python=python3
 alias pip=pip3
