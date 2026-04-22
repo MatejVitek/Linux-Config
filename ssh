@@ -41,15 +41,15 @@ Host zvonko
 
 # FE Lab
 Host lsi lmi
-	HostName 8.tcp.ngrok.io
+	HostName 5.tcp.eu.ngrok.io
 	User mvitek
-	Port 19634
+	Port 14603
 	ForwardAgent yes
 
 Host newton
 	HostName 192.168.91.110
 	ProxyJump lsi
-	User matejv
+	User mvitek
 	ForwardAgent yes
 
 Host lecun
