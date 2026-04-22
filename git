@@ -14,7 +14,7 @@
 	# This is a trick to allow passing arguments to git aliases
 	discard = "![ -z \"$1\" ] && { git checkout -- .; git clean -df; } || git checkout -- \"$1\" #"
 	f = "!git add -A && git commit -m \"$1\" && git push #"
-	fc = "!dir=\"${2:-$(basename \"$1\" .git)}\"; git clone --recurse-submodules -j8 \"$1\" \"$dir\" && git -C \"$dir\" submodule update --init --recursive --remote --rebase #"
+	fc = "!dir=\"${2:-$(basename \"$1\" .git)}\"; git clone --recurse-submodules -j8 \"$1\" \"$dir\" && git -C \"$dir\" submodule foreach -q 'git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master)' #"
 	l = ls-files
 	ls = ls-files
 	p = push
