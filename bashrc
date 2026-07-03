@@ -21,7 +21,7 @@ fi
 # Aliases
 alias python=python3
 alias pip=pip3
-alias ds="ssh DeathStar"
+alias ds="ssh Death-Star"
 alias dingo="ssh dingo"
 alias panga="ssh panga"
 alias palit="ssh palit"

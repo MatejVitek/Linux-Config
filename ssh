@@ -2,7 +2,7 @@
 Include ~/.cfg/local/ssh
 
 # Workstation
-Host DeathStar deathstar ds
+Host Death-Star DeathStar deathstar ds
 	HostName deathstar.fri.uni-lj.si
 	Port 3022
 	ForwardX11 yes
@@ -70,7 +70,7 @@ Host lrv
 	User matejv
 
 # Sclera VM on LRV server
-Host sclera endor
+Host sclera bespin
 	HostName sclera.fri.uni-lj.si
 	Port 3022
 	ForwardAgent yes
@@ -96,6 +96,9 @@ Host *vega*
 
 # Defaults
 Host *
+	IgnoreUnknown UseKeychain  # This one is
+	UseKeychain yes            # Mac-specific
+	AddKeysToAgent yes
 	ForwardAgent no
 	ForwardX11 no
 	ForwardX11Trusted no

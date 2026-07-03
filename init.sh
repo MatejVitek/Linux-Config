@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Determine OS once at the start
+[[ "$OSTYPE" == "darwin"* ]] && IS_MAC=true || IS_MAC=false
+
 # Helper function to ask for confirmation
 ask() {
 	case "$2" in
@@ -68,6 +71,15 @@ else
 	echo "bashrc already found"
 fi
 
+# macOS Specific: Also source bashrc in .zshrc since Zsh is the default Mac shell
+if $IS_MAC; then
+	[ -e .zshrc ] || touch .zshrc
+	if ! grep -q -F '.cfg/bashrc' .zshrc; then
+		echo "macOS detected: Appending bashrc to .zshrc"
+		echo '[[ -s "$HOME/.cfg/bashrc" ]] && . "$HOME/.cfg/bashrc"' >> .zshrc
+	fi
+fi
+
 # If .bash_profile doesn't exist but .profile does, rename it (since we never use sh as a login shell anyway)
 if [ ! -e .bash_profile ] && [ -e .profile ]; then
 	echo "Renaming .profile to .bash_profile"
@@ -90,18 +102,29 @@ fi
 # If including git doesn't happen yet in .gitconfig, add it
 if [ ! -L .gitconfig ] && ! grep -q -F '.cfg/git' .gitconfig; then
 	echo "Including shared git config"
-	# If [include] not in .gitconfig yet, add it at the start
-	newline=
-	if ! grep -q -F '[include]' .gitconfig; then
-		newline=\\\n
-		if [ -s .gitconfig ]; then
-			sed -i '1i\[include]' .gitconfig
+
+	if $IS_MAC; then
+		# macOS / BSD safe method using a temporary file
+		if ! grep -q -F '[include]' .gitconfig; then
+			echo -e "[include]\n\tpath = ~/.cfg/git" | cat - .gitconfig > .gitconfig.tmp && mv .gitconfig.tmp .gitconfig
 		else
-			echo "[include]" >> .gitconfig
+			# If [include] exists, safely append the path right under it
+			perl -pi -e 's/^\[include\]/\[include\]\n\tpath = ~\/.cfg\/git/' .gitconfig
 		fi
+	else
+		# If [include] not in .gitconfig yet, add it at the start
+		newline=
+		if ! grep -q -F '[include]' .gitconfig; then
+			newline=\\\n
+			if [ -s .gitconfig ]; then
+				sed -i '1i\[include]' .gitconfig
+			else
+				echo "[include]" >> .gitconfig
+			fi
+		fi
+		# https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/
+		sed -i "/^\[include\]/a \\\\tpath = ~\/.cfg\/git${newline}" .gitconfig
 	fi
-	# https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/
-	sed -i "/^\[include\]/a \\\\tpath = ~\/.cfg\/git${newline}" .gitconfig
 else
 	echo ".gitconfig already linked or included"
 fi
@@ -144,11 +167,16 @@ if [ -L .inputrc ]; then
 elif [ -f .inputrc ]; then
 	if ! grep -q -F '.cfg/inputrc' .inputrc; then
 		echo "Appending inputrc"
-		# Prepend instead of appending so the local configuration wins out
-		if [ -s .inputrc ]; then
-			sed -i '$include "$HOME/.cfg/inputrc"' .inputrc
+		if $IS_MAC; then
+			# macOS / BSD safe prepend
+			echo '$include "$HOME/.cfg/inputrc"' | cat - .inputrc > .inputrc.tmp && mv .inputrc.tmp .inputrc
 		else
-			echo '$include "$HOME/.cfg/inputrc"' >> .inputrc
+			# Prepend instead of appending so the local configuration wins out
+			if [ -s .inputrc ]; then
+				sed -i '$include "$HOME/.cfg/inputrc"' .inputrc
+			else
+				echo '$include "$HOME/.cfg/inputrc"' >> .inputrc
+			fi
 		fi
 	else
 		echo "inputrc already found"
