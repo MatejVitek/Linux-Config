@@ -1,0 +1,40 @@
+# =========================
+# Windows
+# =========================
+Thumbs.db
+Thumbs.db:encryptable
+desktop.ini
+$RECYCLE.BIN/
+
+# =========================
+# Linux
+# =========================
+*~
+.fuse_hidden*
+.Trash-*
+
+# =========================
+# macOS
+# =========================
+.DS_Store
+.AppleDouble
+.LSOverride
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+.apdisk
+
+# =========================
+# Python
+# =========================
+# These should still be ignored in the projects' .gitignores for other people's sake
+__pycache__/
+*.py[cod]
+*$py.class

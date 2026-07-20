@@ -3,6 +3,9 @@
 	email = matej.vitek.business@gmail.com
 	name = Matej Vitek
 
+[core]
+	excludesfile = ~/.cfg/git/ignore
+
 [alias]
 	a = add -A
 	b = branch

@@ -62,21 +62,31 @@ done
 echo "Setting permissions"
 chmod -R 755 .cfg
 
-# bashrc
-# If bashrc isn't sourced yet in .bashrc, append line
-if ! grep -q -F '.cfg/bashrc' .bashrc; then
-	echo "Appending bashrc"
-	echo '. "$HOME/.cfg/bashrc"' >> .bashrc
+# Ensure default shell config exists based on OS
+if $IS_MAC; then
+	[ -f .zshrc ] || touch .zshrc
 else
-	echo "bashrc already found"
+	[ -f .bashrc ] || touch .bashrc
 fi
 
-# macOS Specific: Also source bashrc in .zshrc since Zsh is the default Mac shell
-if $IS_MAC; then
-	[ -e .zshrc ] || touch .zshrc
+# bashrc
+# If bashrc isn't sourced yet in .bashrc, append line
+if [ -f .bashrc ]; then
+	if ! grep -q -F '.cfg/bashrc' .bashrc; then
+		echo "Appending bashrc to .bashrc"
+		echo '[[ -s "$HOME/.cfg/bashrc" ]] && . "$HOME/.cfg/bashrc"' >> .bashrc
+	else
+		echo "bashrc already found in .bashrc"
+	fi
+fi
+
+# Repeat for zshrc (e.g. on Mac)
+if [ -f .zshrc ]; then
 	if ! grep -q -F '.cfg/bashrc' .zshrc; then
-		echo "macOS detected: Appending bashrc to .zshrc"
+		echo "Appending bashrc to .zshrc"
 		echo '[[ -s "$HOME/.cfg/bashrc" ]] && . "$HOME/.cfg/bashrc"' >> .zshrc
+	else
+		echo "bashrc already found in .zshrc"
 	fi
 fi
 
@@ -100,16 +110,16 @@ fi
 # If it doesn't exist, create it
 [ -e .gitconfig ] || touch .gitconfig
 # If including git doesn't happen yet in .gitconfig, add it
-if [ ! -L .gitconfig ] && ! grep -q -F '.cfg/git' .gitconfig; then
+if [ ! -L .gitconfig ] && ! grep -q -F '.cfg/git/config' .gitconfig; then
 	echo "Including shared git config"
 
 	if $IS_MAC; then
 		# macOS / BSD safe method using a temporary file
 		if ! grep -q -F '[include]' .gitconfig; then
-			echo -e "[include]\n\tpath = ~/.cfg/git" | cat - .gitconfig > .gitconfig.tmp && mv .gitconfig.tmp .gitconfig
+			echo -e "[include]\n\tpath = ~/.cfg/git/config" | cat - .gitconfig > .gitconfig.tmp && mv .gitconfig.tmp .gitconfig
 		else
 			# If [include] exists, safely append the path right under it
-			perl -pi -e 's/^\[include\]/\[include\]\n\tpath = ~\/.cfg\/git/' .gitconfig
+			perl -pi -e 's/^\[include\]/\[include\]\n\tpath = ~\/.cfg\/git\/config/' .gitconfig
 		fi
 	else
 		# If [include] not in .gitconfig yet, add it at the start
@@ -123,7 +133,7 @@ if [ ! -L .gitconfig ] && ! grep -q -F '.cfg/git' .gitconfig; then
 			fi
 		fi
 		# https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/
-		sed -i "/^\[include\]/a \\\\tpath = ~\/.cfg\/git${newline}" .gitconfig
+		sed -i "/^\[include\]/a \\\\tpath = ~\/.cfg\/git\/config${newline}" .gitconfig
 	fi
 else
 	echo ".gitconfig already linked or included"
@@ -225,11 +235,22 @@ else
 fi
 
 # localbashrc - same thing as bashrc
-if ! grep -q -F '.cfg/local/bashrc' .bashrc; then
-	echo "Appending local bashrc"
-	echo '. "$HOME/.cfg/local/bashrc"' >> .bashrc
-else
-	echo "Local bashrc already found"
+if [ -f .bashrc ]; then
+	if ! grep -q -F '.cfg/local/bashrc' .bashrc; then
+		echo "Appending local bashrc to .bashrc"
+		echo '[[ -s "$HOME/local/.cfg/bashrc" ]] && . "$HOME/.cfg/local/bashrc"' >> .bashrc
+	else
+		echo "Local bashrc already found in .bashrc"
+	fi
+fi
+
+if [ -f .zshrc ]; then
+	if ! grep -q -F '.cfg/local/bashrc' .zshrc; then
+		echo "Appending local bashrc to .zshrc"
+		echo '[[ -s "$HOME/.cfg/local/bashrc" ]] && . "$HOME/.cfg/local/bashrc"' >> .zshrc
+	else
+		echo "Local bashrc already found in .zshrc"
+	fi
 fi
 
 # localprofile - same thing as bashrc
