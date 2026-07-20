@@ -91,18 +91,22 @@ if [ -f .zshrc ]; then
 fi
 
 # If .bash_profile doesn't exist but .profile does, rename it (since we never use sh as a login shell anyway)
-if [ ! -e .bash_profile ] && [ -e .profile ]; then
-	echo "Renaming .profile to .bash_profile"
-	mv .profile .bash_profile
+if ! $IS_MAC; then
+	if [ ! -e .bash_profile ] && [ -e .profile ]; then
+		echo "Renaming .profile to .bash_profile"
+		mv .profile .bash_profile
+	fi
 fi
 
 # If profile isn't sourced yet in .bash_profile, append line (but currently doesn't exist so commented out)
 #TODO: Create the file and add ssh-agent code to it from https://stackoverflow.com/questions/18880024/start-ssh-agent-on-login/18915067#18915067
-#if ! grep -q -F '.cfg/profile' .bash_profile; then
-#	echo "Appending profile"
-#	echo '. "$HOME/.cfg/profile"' >> .bash_profile
-#else
-#	echo "profile already found"
+#if [ -f .bash_profile ]; then
+#	if ! grep -q -F '.cfg/profile' .bash_profile; then
+#		echo "Appending profile to .bash_profile"
+#		echo '[[ -s "$HOME/.cfg/profile" ]] && . "$HOME/.cfg/profile"' >> .bash_profile
+#	else
+#		echo "profile already found in .bash_profile"
+#	fi
 #fi
 
 # gitconfig
@@ -254,11 +258,13 @@ if [ -f .zshrc ]; then
 fi
 
 # localprofile - same thing as bashrc
-if ! grep -q -F '.cfg/local/profile' .bash_profile; then
-	echo "Appending local profile"
-	echo '. "$HOME/.cfg/local/profile"' >> .bash_profile
-else
-	echo "Local profile already found"
+if [ -f .bash_profile ]; then
+	if ! grep -q -F '.cfg/local/profile' .bash_profile; then
+		echo "Appending local profile to .bash_profile"
+		echo '[[ -s "$HOME/.cfg/local/profile" ]] && . "$HOME/.cfg/local/profile"' >> .bash_profile
+	else
+		echo "Local profile already found in .bash_profile"
+	fi
 fi
 
 # Replace this repo's URL with the SSH version since we have SSH keys now
