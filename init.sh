@@ -80,13 +80,19 @@ if [ -f .bashrc ]; then
 	fi
 fi
 
-# Repeat for zshrc (e.g. on Mac)
+# Repeat for zshrc (e.g. on Mac) and also source the shared .zshrc
 if [ -f .zshrc ]; then
 	if ! grep -q -F '.cfg/bashrc' .zshrc; then
 		echo "Appending bashrc to .zshrc"
 		echo '[[ -s "$HOME/.cfg/bashrc" ]] && . "$HOME/.cfg/bashrc"' >> .zshrc
 	else
 		echo "bashrc already found in .zshrc"
+	fi
+	if ! grep -q -F '.cfg/zshrc' .zshrc; then
+		echo "Appending shared zshrc to .zshrc"
+		echo '[[ -s "$HOME/.cfg/zshrc" ]] && . "$HOME/.cfg/zshrc"' >> .zshrc
+	else
+		echo "Shared zshrc already found in .zshrc"
 	fi
 fi
 
