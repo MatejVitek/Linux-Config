@@ -38,3 +38,19 @@ Network Trash Folder
 __pycache__/
 *.py[cod]
 *$py.class
+
+# =========================
+# LaTeX
+# =========================
+# These should still be ignored in the projects' .gitignores for other people's sake
+# .out and .log are probably useful exclusions even outside of LaTeX
+*.aux
+*.bbl
+*.bcf
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc

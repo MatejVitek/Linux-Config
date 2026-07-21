@@ -65,8 +65,10 @@ chmod -R 755 .cfg
 # Ensure default shell config exists based on OS
 if $IS_MAC; then
 	[ -f .zshrc ] || touch .zshrc
+	[ -f .zprofile ] || touch .zprofile
 else
 	[ -f .bashrc ] || touch .bashrc
+	[ -f .bash_profile ] || touch .bash_profile
 fi
 
 # bashrc
@@ -104,7 +106,7 @@ if ! $IS_MAC; then
 	fi
 fi
 
-# If profile isn't sourced yet in .bash_profile, append line (but currently doesn't exist so commented out)
+# If profile isn't sourced yet in login profiles, append line (but currently doesn't exist so commented out)
 #TODO: Create the file and add ssh-agent code to it from https://stackoverflow.com/questions/18880024/start-ssh-agent-on-login/18915067#18915067
 #if [ -f .bash_profile ]; then
 #	if ! grep -q -F '.cfg/profile' .bash_profile; then
@@ -112,6 +114,24 @@ fi
 #		echo '[[ -s "$HOME/.cfg/profile" ]] && . "$HOME/.cfg/profile"' >> .bash_profile
 #	else
 #		echo "profile already found in .bash_profile"
+#	fi
+#fi
+#
+#if [ -f .zprofile ]; then
+#	if ! grep -q -F '.cfg/profile' .zprofile; then
+#		echo "Appending profile to .zprofile"
+#		echo '[[ -s "$HOME/.cfg/profile" ]] && . "$HOME/.cfg/profile"' >> .zprofile
+#	else
+#		echo "profile already found in .zprofile"
+#	fi
+#fi
+#
+#if [ -f .profile ]; then
+#	if ! grep -q -F '.cfg/profile' .profile; then
+#		echo "Appending profile to .profile"
+#		echo '[[ -s "$HOME/.cfg/profile" ]] && . "$HOME/.cfg/profile"' >> .profile
+#	else
+#		echo "profile already found in .profile"
 #	fi
 #fi
 
@@ -263,13 +283,31 @@ if [ -f .zshrc ]; then
 	fi
 fi
 
-# localprofile - same thing as bashrc
+# localprofile - same thing as bashrc, but handle all common profile files
 if [ -f .bash_profile ]; then
 	if ! grep -q -F '.cfg/local/profile' .bash_profile; then
 		echo "Appending local profile to .bash_profile"
 		echo '[[ -s "$HOME/.cfg/local/profile" ]] && . "$HOME/.cfg/local/profile"' >> .bash_profile
 	else
 		echo "Local profile already found in .bash_profile"
+	fi
+fi
+
+if [ -f .zprofile ]; then
+	if ! grep -q -F '.cfg/local/profile' .zprofile; then
+		echo "Appending local profile to .zprofile"
+		echo '[[ -s "$HOME/.cfg/local/profile" ]] && . "$HOME/.cfg/local/profile"' >> .zprofile
+	else
+		echo "Local profile already found in .zprofile"
+	fi
+fi
+
+if [ -f .profile ]; then
+	if ! grep -q -F '.cfg/local/profile' .profile; then
+		echo "Appending local profile to .profile"
+		echo '[[ -s "$HOME/.cfg/local/profile" ]] && . "$HOME/.cfg/local/profile"' >> .profile
+	else
+		echo "Local profile already found in .profile"
 	fi
 fi
 
