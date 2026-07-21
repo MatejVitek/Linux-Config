@@ -50,6 +50,7 @@ __pycache__/
 *.fdb_latexmk
 *.fls
 *.log
+*.blg
 *.out
 *.run.xml
 *.synctex.gz
